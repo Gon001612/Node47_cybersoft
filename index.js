@@ -1,11 +1,16 @@
 import express from 'express';
 import connect from './db.js';
+import rootRoutes from './src/routers/rootRoutes.js';
+import { createUser, createUserDb, getUserDb } from './src/controllers/userControllers.js';
 
 
 const app = express();
 
 // thêm middleware để convert string về json với api post và put
 app.use(express.json());
+
+// import rootRoutes vao index.js
+app.use(rootRoutes);
 
 app.get('/hello-world', (req,res) => {
 res.send("hello world");
@@ -25,28 +30,13 @@ app.get('/health-check', (req,res) => {
     res.send("sever is connecting")
 })
 
-app.post("/create-user", (req,res) => {
-    let body = req.body;
-    res.send(body)
-})
+// define API get list users
 
-app.get("/get-user-db", async (req,res) => {
-    const [data] = await connect.query(`
-        select * from users
-        `)
-        res.send(data)
-})
+app.post("/create-user", createUser)
 
-app.post("/create-user-db", (req,res) => {
-    const query = `
-        insert into users(full_name,email,pass,pass_word) values
-        (?,?,?,?)
-    `;
-    let body = req.body;
-    let {full_name,emailpass_word} = body;
-    const [data] = connect.execute(query, [full_name,email,pass_word])
-    return res.send(data)
-})
+app.get("/get-user-db", getUserDb)
+
+app.post("/create-user-db", createUserDb)
 
 app.listen(8080, () => {
     console.log("BE Starting with port 8080")
