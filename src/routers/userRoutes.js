@@ -9,5 +9,5 @@ userRoutes.get("/get-user-db", getUserDb);
 userRoutes.get("/get-users-orm", getUserOrm);
 userRoutes.get('/get-users-orm/:id', getUserOrmById);
 userRoutes.post('/create-user-orm', createUserOrm)
-
+// host: /user/
 export default userRoutes;
