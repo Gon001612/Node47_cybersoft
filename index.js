@@ -2,9 +2,15 @@ import express from 'express';
 import connect from './db.js';
 import rootRoutes from './src/routers/rootRoutes.js';
 import { createUser, createUserDb, getUserDb } from './src/controllers/userControllers.js';
+import cors from "cors";
+
+
 
 
 const app = express();
+
+// thêm middleware cors để nhận req từ FE hoặc bên khác 
+app.use(cors());
 
 // thêm middleware để convert string về json với api post và put
 app.use(express.json());
